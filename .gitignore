@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.DS_Store
+.env
+.venv/
+__pycache__/
+storage/uploads/*
+storage/masks/*
+storage/outputs/*
+!storage/uploads/.gitkeep
+!storage/masks/.gitkeep
+!storage/outputs/.gitkeep
+
+# Claude Code local overrides (user-specific, not team-shared)
+.claude/settings.local.json

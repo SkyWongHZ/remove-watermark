@@ -1,0 +1,14 @@
+{
+  "name": "remove-watermark",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.8.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @remove-watermark/server --filter @remove-watermark/web dev",
+    "dev:web": "pnpm --filter @remove-watermark/web dev",
+    "dev:server": "pnpm --filter @remove-watermark/server dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck"
+  }
+}
+
