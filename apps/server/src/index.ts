@@ -54,11 +54,12 @@ const config = {
   iopaintBin: process.env.IOPAINT_BIN
     ? path.resolve(process.env.IOPAINT_BIN)
     : path.join(repoRoot, ".venv/bin/iopaint"),
-  maxUploadMb: Number(process.env.MAX_UPLOAD_MB ?? 20),
+  maxUploadBytes: Number(process.env.MAX_UPLOAD_BYTES ?? 15 * 1024 * 1024),
   maxImageEdge: Number(process.env.MAX_IMAGE_EDGE ?? 4096)
 };
 
-const maxUploadBytes = config.maxUploadMb * 1024 * 1024;
+const maxUploadBytes = config.maxUploadBytes;
+const maxUploadMb = Math.floor(maxUploadBytes / 1024 / 1024);
 const maxInputPixels = config.maxImageEdge * config.maxImageEdge;
 const supportedFormats = new Set(["jpeg", "jpg", "png", "webp"]);
 
@@ -102,7 +103,7 @@ app.setErrorHandler((error, _request, reply) => {
     return reply.status(413).send({
       error: {
         code: "FILE_TOO_LARGE",
-        message: `单文件大小不能超过 ${config.maxUploadMb}MB`
+        message: `图片超过 ${maxUploadMb}MB 上限,请压缩后重试`
       }
     });
   }
@@ -185,7 +186,7 @@ async function readUploadParts(request: FastifyRequest): Promise<RectFileMap> {
       throw new ApiError(
         "FILE_TOO_LARGE",
         413,
-        `单文件大小不能超过 ${config.maxUploadMb}MB`
+        `图片超过 ${maxUploadMb}MB 上限,请压缩后重试`
       );
     }
 

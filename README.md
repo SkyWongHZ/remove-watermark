@@ -42,6 +42,10 @@ pnpm dev:web      # 前端 http://localhost:5173
 pnpm dev:server   # 后端
 ```
 
+## 限制
+
+- **单张图片上传上限:15 MB**(前后端双校验,超限会被拦截并提示)。后端可通过环境变量 `MAX_UPLOAD_BYTES` 调整,前端常量在 `apps/web/src/App.vue` 顶部 `MAX_UPLOAD_BYTES`。
+
 ## 文档
 
 详细设计与本地搭建说明见 `docs/`:
