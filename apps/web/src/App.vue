@@ -165,6 +165,9 @@ type ResizeHandle = "nw" | "ne" | "sw" | "se";
 type DragMode = "move" | ResizeHandle;
 type MaskRect = { x: number; y: number; width: number; height: number };
 
+const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
+const MAX_UPLOAD_MB = Math.floor(MAX_UPLOAD_BYTES / 1024 / 1024);
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || ""
 });
@@ -248,6 +251,11 @@ function handleFileChange(event: Event) {
 
   if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
     errorMessage.value = "仅支持 JPG、PNG、WebP 图片";
+    return;
+  }
+
+  if (file.size > MAX_UPLOAD_BYTES) {
+    errorMessage.value = `图片超过 ${MAX_UPLOAD_MB}MB 上限,请压缩后重试`;
     return;
   }
 
